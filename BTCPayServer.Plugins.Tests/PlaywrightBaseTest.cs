@@ -135,12 +135,25 @@ public class PlaywrightBaseTest : UnitTestBase, IDisposable
         return (name, storeId);
     }
 
-    public async Task InitializeBTCPayServer()
+    public async Task InitializeBTCPayServerWithMoneroPlugin()
     {
         await GoToUrl("/register");
         await RegisterNewUser(true);
         await CreateNewStoreAsync();
         await GoToStore();
-        // await AddMoneroPlugin();
+        await GoToUrl("server/plugins");
+        await AddMoneroPlugin();
+    }
+
+    private async Task AddMoneroPlugin()
+    {
+        await Page.FillAsync("input[name='search']", "monero");
+        await Page.ClickAsync("button[type='submit']");
+        await Page.Locator("h4.card-title:has-text('BTCPay Server: Monero support plugin')").WaitForAsync();
+        await Page.ClickAsync("button.btn.btn-primary:has-text(\"Install\")");
+        await Page.Locator("span:has-text('Plugin scheduled to be installed.')").WaitForAsync();
+        await Page.ClickAsync("button[name='command'][value='soft-restart']");
+        await Page.Locator("span:has-text('BTCPay will restart momentarily.')").WaitForAsync();
+        await Page.ReloadAsync();
     }
 }
