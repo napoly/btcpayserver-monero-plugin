@@ -141,19 +141,15 @@ public class PlaywrightBaseTest : UnitTestBase, IDisposable
         await RegisterNewUser(true);
         await CreateNewStoreAsync();
         await GoToStore();
-        await GoToUrl("server/plugins");
-        await AddMoneroPlugin();
+        await ConfigureAndEnableMoneroPlugin();
     }
 
-    private async Task AddMoneroPlugin()
+    private async Task ConfigureAndEnableMoneroPlugin()
     {
-        await Page.FillAsync("input[name='search']", "monero");
-        await Page.ClickAsync("button[type='submit']");
-        await Page.Locator("h4.card-title:has-text('BTCPay Server: Monero support plugin')").WaitForAsync();
-        await Page.ClickAsync("button.btn.btn-primary:has-text(\"Install\")");
-        await Page.Locator("span:has-text('Plugin scheduled to be installed.')").WaitForAsync();
-        await Page.ClickAsync("button[name='command'][value='soft-restart']");
-        await Page.Locator("span:has-text('BTCPay will restart momentarily.')").WaitForAsync();
-        await Page.ReloadAsync();
+        await Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
+        await Page.Locator("#NewAccountLabel").FillAsync("Wallet Label");
+        await Page.CheckAsync("#Enabled");
+        await Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "2");
+        await Page.ClickAsync("#SaveButton");
     }
 }
