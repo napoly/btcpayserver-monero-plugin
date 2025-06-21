@@ -83,10 +83,6 @@ dotnet build btcpay-monero-plugin.sln
 docker compose -f BTCPayServer.Plugins.IntegrationTests/docker-compose.yml run tests
 ```
 
-| Environment variable | Description                                                                                                                                                                                                                                   | Example |
-| --- |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| --- |
-**BTCPAY_XMR_CASHCOW_WALLET_DAEMON_URI** | **Optional**. | The URI of the [monero-wallet-rpc](https://getmonero.dev/interacting/monero-wallet-rpc.html) interface for the cashcow wallet. This is used to create a second wallet for testing purposes in regtest mode.
-
 ## Code formatting
 
 We use the **unmodified** standardized `.editorconfig` from .NET SDK. Run `dotnet new editorconfig --force` to apply the latest version.
@@ -105,8 +101,7 @@ Then create the `appsettings.dev.json` file in `btcpayserver/BTCPayServer`, with
 {
   "DEBUG_PLUGINS": "..\\..\\Plugins\\Monero\\bin\\Debug\\net8.0\\BTCPayServer.Plugins.Monero.dll",
   "XMR_DAEMON_URI": "http://127.0.0.1:18081",
-  "XMR_WALLET_DAEMON_URI": "http://127.0.0.1:18082",
-  "XMR_CASHCOW_WALLET_DAEMON_URI": "http://127.0.0.1:18092"
+  "XMR_WALLET_DAEMON_URI": "http://127.0.0.1:18082"
 }
 ```
 This will ensure that BTCPay Server loads the plugin when it starts.
@@ -132,9 +127,6 @@ Note: Running or compiling the BTCPay Server project will not automatically reco
 We recommend using [Rider](https://www.jetbrains.com/rider/) for plugin development, as it supports hot reload with plugins. You can edit `.cshtml` files, save, and refresh the page to see the changes.
 
 Visual Studio does not support this feature.
-
-When debugging in regtest, BTCPay Server will automatically create an configure two wallets. (cashcow and merchant)
-You can trigger payments or mine blocks on the invoice's checkout page.
 
 ## About docker-compose deployment
 

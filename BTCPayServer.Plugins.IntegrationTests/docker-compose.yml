@@ -32,7 +32,6 @@ services:
       - nbxplorer
       - postgres
       - xmr_wallet
-      - xmr_cashcow_wallet
 
   nbxplorer:
     image: nicolasdorier/nbxplorer:2.5.25
@@ -95,7 +94,7 @@ services:
     container_name: monerod
     entrypoint: monerod --fixed-difficulty 1 --log-level=2 --rpc-bind-ip=0.0.0.0 --confirm-external-bind --rpc-bind-port=18081 --block-notify="/bin/sh ./scripts/notifier.sh -k -X GET https://host.docker.internal:14142/monerolikedaemoncallback/block?cryptoCode=xmr&hash=%s" --regtest --no-igd --hide-my-port --offline --non-interactive
     volumes:
-      - "xmr_data:/home/monero/.bitmonero"
+      - xmr_data:/home/monero/.bitmonero
     ports:
       - "18081:18081"
 
@@ -107,19 +106,7 @@ services:
     ports:
       - "18082:18082"
     volumes:
-      - "xmr_wallet:/wallet"
-    depends_on:
-      - monerod
-  
-  xmr_cashcow_wallet:
-    image: btcpayserver/monero:0.18.4.0
-    restart: unless-stopped
-    container_name: xmr_cashcow_wallet
-    entrypoint: monero-wallet-rpc --log-level 2 --allow-mismatched-daemon-version --rpc-bind-ip=0.0.0.0 --disable-rpc-login --confirm-external-bind --rpc-bind-port=18092 --non-interactive --trusted-daemon  --daemon-address=monerod:18081 --wallet-dir=/wallet
-    ports:
-      - "18092:18092"
-    volumes:
-      - "xmr_cashcow_wallet:/wallet"
+      - xmr_wallet:/wallet
     depends_on:
       - monerod
 
@@ -137,7 +124,6 @@ volumes:
   bitcoin_datadir:
   xmr_data:
   xmr_wallet:
-  xmr_cashcow_wallet:
 
 networks:
   default:
