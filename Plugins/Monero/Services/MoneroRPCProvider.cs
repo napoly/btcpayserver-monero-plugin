@@ -100,23 +100,27 @@ namespace BTCPayServer.Plugins.Monero.Services
 
             bool walletCreated = false;
         retry:
-            try
+            summary.WalletAvailable = false;
+            for (int i = 0; i < 5 && !summary.WalletAvailable; i++)
             {
-                var walletResult =
-                    await walletRpcClient.SendCommandAsync<JsonRpcClient.NoRequestModel, GetHeightResponse>(
+                try
+                {
+                    var walletResult = await walletRpcClient.SendCommandAsync<JsonRpcClient.NoRequestModel, GetHeightResponse>(
                         "get_height", JsonRpcClient.NoRequestModel.Instance);
-                summary.WalletHeight = walletResult.Height;
-                summary.WalletAvailable = true;
-            }
-            catch when (environment.CheatMode && !walletCreated)
-            {
-                await CreateTestWallet(walletRpcClient);
-                walletCreated = true;
-                goto retry;
-            }
-            catch
-            {
-                summary.WalletAvailable = false;
+                    summary.WalletHeight = walletResult.Height;
+                    summary.WalletAvailable = true;
+                }
+                catch when (environment.CheatMode && !walletCreated)
+                {
+                    await CreateTestWallet(walletRpcClient);
+                    walletCreated = true;
+                    goto retry;
+                }
+                catch
+                {
+                    if (i < 5)
+                        await Task.Delay(5000);
+                }
             }
 
             if (environment.CheatMode &&
@@ -170,7 +174,7 @@ namespace BTCPayServer.Plugins.Monero.Services
             _logger.LogInformation("Mining succeed!");
         }
 
-        private static async Task CreateTestWallet(JsonRpcClient walletRpcClient)
+        public static async Task CreateTestWallet(JsonRpcClient walletRpcClient)
         {
             try
             {
@@ -183,10 +187,14 @@ namespace BTCPayServer.Plugins.Monero.Services
                     });
                 return;
             }
-            catch
+            catch (Exception ex)
             {
+                Console.WriteLine("EROR: Failed to open wallet: {Message}", ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("ERROR: Inner exception: {InnerMessage}", ex.InnerException.Message);
+                }
             }
-
             await walletRpcClient.SendCommandAsync<CreateWalletRequest, JsonRpcClient.NoRequestModel>("create_wallet",
                 new()
                 {
