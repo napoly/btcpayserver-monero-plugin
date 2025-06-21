@@ -36,6 +36,9 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
         await s.RegisterNewUser(true);
         await s.CreateNewStore(preferredExchange: "Kraken");
         await s.Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
+        await s.Page.Locator("input#WalletFile").SetInputFilesAsync("../../../../BTCPayServer.Plugins.IntegrationTests/Monero/testwallet");
+        await s.Page.Locator("input#WalletKeysFile").SetInputFilesAsync("../../../../BTCPayServer.Plugins.IntegrationTests/Monero/testwallet.keys");
+        await s.Page.Locator("input#WalletPassword").FillAsync("pass123");
         await s.Page.CheckAsync("#Enabled");
         await s.Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "2");
         await s.Page.ClickAsync("#SaveButton");
