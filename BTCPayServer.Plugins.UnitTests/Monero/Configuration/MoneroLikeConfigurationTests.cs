@@ -23,14 +23,14 @@ namespace BTCPayServer.Plugins.UnitTests.Monero.Configuration
             var configItem = new MoneroLikeConfigurationItem
             {
                 DaemonRpcUri = new Uri("http://localhost:18081"),
-                InternalWalletRpcUri = new Uri("http://localhost:18082"),
+                InternalWalletRpcUri = new Uri("http://localhost:18089"),
                 WalletDirectory = "/wallets",
                 Username = "user",
                 Password = "password"
             };
 
             Assert.Equal("http://localhost:18081/", configItem.DaemonRpcUri.ToString());
-            Assert.Equal("http://localhost:18082/", configItem.InternalWalletRpcUri.ToString());
+            Assert.Equal("http://localhost:18089/", configItem.InternalWalletRpcUri.ToString());
             Assert.Equal("/wallets", configItem.WalletDirectory);
             Assert.Equal("user", configItem.Username);
             Assert.Equal("password", configItem.Password);
@@ -44,7 +44,7 @@ namespace BTCPayServer.Plugins.UnitTests.Monero.Configuration
             var configItem = new MoneroLikeConfigurationItem
             {
                 DaemonRpcUri = new Uri("http://localhost:18081"),
-                InternalWalletRpcUri = new Uri("http://localhost:18082"),
+                InternalWalletRpcUri = new Uri("http://localhost:18089"),
                 WalletDirectory = "/wallets",
                 Username = "user",
                 Password = "password"
@@ -68,7 +68,7 @@ namespace BTCPayServer.Plugins.UnitTests.Monero.Configuration
             };
             var configItem2 = new MoneroLikeConfigurationItem
             {
-                DaemonRpcUri = new Uri("http://localhost:18082")
+                DaemonRpcUri = new Uri("http://localhost:18089")
             };
 
             config.MoneroLikeConfigurationItems.Add("XMR", configItem1);

@@ -10,7 +10,7 @@ namespace BTCPayServer.Plugins.IntegrationTests.Monero
         public MoneroAndBitcoinIntegrationTestBase(ITestOutputHelper helper) : base(helper)
         {
             SetDefaultEnv("BTCPAY_XMR_DAEMON_URI", "http://127.0.0.1:18081");
-            SetDefaultEnv("BTCPAY_XMR_WALLET_DAEMON_URI", "http://127.0.0.1:18082");
+            SetDefaultEnv("BTCPAY_XMR_WALLET_DAEMON_URI", "http://127.0.0.1:18089");
             SetDefaultEnv("BTCPAY_XMR_WALLET_DAEMON_WALLETDIR", "/wallet");
         }
 
