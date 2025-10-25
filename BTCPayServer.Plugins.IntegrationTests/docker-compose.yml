@@ -106,7 +106,7 @@ services:
     ports:
       - "18082:18082"
     volumes:
-      - xmr_wallet:/wallet
+      - ./wallet_backup:/wallet
     depends_on:
       - monerod
 
@@ -123,7 +123,7 @@ services:
 volumes:
   bitcoin_datadir:
   xmr_data:
-  xmr_wallet:
+#  xmr_wallet:
 
 networks:
   default:
