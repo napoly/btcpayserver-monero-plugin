@@ -27,7 +27,7 @@ public static class IntegrationTestUtils
     private static readonly string ContainerWalletDir =
         Environment.GetEnvironmentVariable("BTCPAY_XMR_WALLET_DAEMON_WALLETDIR") ?? "/wallet";
 
-    public static async Task CleanUpAsync(PlaywrightTester playwrightTester)
+    public static async Task CleanUpAsync(PlaywrightTester playwrightTester, bool dropDatabase = true)
     {
         MoneroRpcProvider moneroRpcProvider = playwrightTester.Server.PayTester.GetService<MoneroRpcProvider>();
         if (moneroRpcProvider.IsAvailable("XMR"))
@@ -38,16 +38,22 @@ public static class IntegrationTestUtils
         if (RunsInContainer)
         {
             DeleteWalletInContainer();
-            await DropDatabaseAsync(
-                "btcpayserver",
-                "Host=postgres;Port=5432;Username=postgres;Database=postgres");
+            if (dropDatabase)
+            {
+                await DropDatabaseAsync(
+                    "btcpayserver",
+                    "Host=postgres;Port=5432;Username=postgres;Database=postgres");
+            }
         }
         else
         {
             await RemoveWalletFromLocalDocker();
-            await DropDatabaseAsync(
-                "btcpayserver",
-                "Host=localhost;Port=39372;Username=postgres;Database=postgres");
+            if (dropDatabase)
+            {
+                await DropDatabaseAsync(
+                    "btcpayserver",
+                    "Host=localhost;Port=39372;Username=postgres;Database=postgres");
+            }
         }
     }
 
