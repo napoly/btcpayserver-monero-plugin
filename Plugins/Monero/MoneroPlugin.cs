@@ -75,9 +75,10 @@ public class MoneroPlugin : BaseBTCPayServerPlugin
                     PreAuthenticate = true
                 };
             });
-        services.AddSingleton<MoneroRPCProvider>();
+        services.AddSingleton<MoneroRpcProvider>();
         services.AddHostedService<MoneroLikeSummaryUpdaterHostedService>();
         services.AddHostedService<MoneroListener>();
+        services.AddHostedService<MoneroLoadUpService>();
         services.AddSingleton(provider =>
                 (IPaymentMethodHandler)ActivatorUtilities.CreateInstance(provider, typeof(MoneroLikePaymentMethodHandler), network));
         services.AddSingleton(provider =>

@@ -33,12 +33,12 @@ namespace BTCPayServer.Plugins.Monero.Controllers
     {
         private readonly MoneroLikeConfiguration _MoneroLikeConfiguration;
         private readonly StoreRepository _StoreRepository;
-        private readonly MoneroRPCProvider _MoneroRpcProvider;
+        private readonly MoneroRpcProvider _MoneroRpcProvider;
         private readonly PaymentMethodHandlerDictionary _handlers;
         private IStringLocalizer StringLocalizer { get; }
 
         public UIMoneroLikeStoreController(MoneroLikeConfiguration moneroLikeConfiguration,
-            StoreRepository storeRepository, MoneroRPCProvider moneroRpcProvider,
+            StoreRepository storeRepository, MoneroRpcProvider moneroRpcProvider,
             PaymentMethodHandlerDictionary handlers,
             IStringLocalizer stringLocalizer)
         {
@@ -219,9 +219,8 @@ namespace BTCPayServer.Plugins.Monero.Controllers
                         {
                             PrimaryAddress = viewModel.PrimaryAddress,
                             PrivateViewKey = viewModel.PrivateViewKey,
-                            WalletFileName = "view_wallet",
-                            RestoreHeight = viewModel.RestoreHeight,
-                            Password = viewModel.WalletPassword
+                            WalletFileName = "wallet",
+                            RestoreHeight = viewModel.RestoreHeight
                         });
                         if (response?.Error != null)
                         {
@@ -286,7 +285,7 @@ namespace BTCPayServer.Plugins.Monero.Controllers
 
         public class MoneroLikePaymentMethodViewModel : IValidatableObject
         {
-            public MoneroRPCProvider.MoneroLikeSummary Summary { get; set; }
+            public MoneroRpcProvider.MoneroLikeSummary Summary { get; set; }
             public string CryptoCode { get; set; }
             public string NewAccountLabel { get; set; }
             public long AccountIndex { get; set; }
@@ -300,8 +299,6 @@ namespace BTCPayServer.Plugins.Monero.Controllers
             public string PrivateViewKey { get; set; }
             [Display(Name = "Restore Height")]
             public int RestoreHeight { get; set; }
-            [Display(Name = "Wallet Password")]
-            public string WalletPassword { get; set; }
             [Display(Name = "Consider the invoice settled when the payment transaction …")]
             public MoneroLikeSettlementThresholdChoice SettlementConfirmationThresholdChoice { get; set; }
             [Display(Name = "Required Confirmations"), Range(0, 100)]
