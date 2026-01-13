@@ -44,7 +44,6 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
         await s.Page.Locator("input#PrivateViewKey")
             .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
-        await s.Page.Locator("input#WalletPassword").FillAsync("pass123");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         await s.Page.CheckAsync("#Enabled");
         await s.Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "2");
@@ -119,7 +118,6 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
         await s.Page.Locator("input#PrivateViewKey")
             .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
-        await s.Page.Locator("input#WalletPassword").FillAsync("pass123");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         var errorText = await s.Page
             .Locator("div.validation-summary-errors li")
@@ -136,12 +134,12 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
         await using var s = CreatePlaywrightTester();
         await s.StartAsync();
 
-        MoneroRPCProvider moneroRpcProvider = s.Server.PayTester.GetService<MoneroRPCProvider>();
+        MoneroRpcProvider moneroRpcProvider = s.Server.PayTester.GetService<MoneroRpcProvider>();
         await moneroRpcProvider.WalletRpcClients["XMR"].SendCommandAsync<GenerateFromKeysRequest, GenerateFromKeysResponse>("generate_from_keys", new GenerateFromKeysRequest
         {
             PrimaryAddress = "43Pnj6ZKGFTJhaLhiecSFfLfr64KPJZw7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L",
             PrivateViewKey = "1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e",
-            WalletFileName = "view_wallet",
+            WalletFileName = "wallet",
             Password = ""
         });
         await moneroRpcProvider.CloseWallet("XMR");
@@ -154,13 +152,49 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
         await s.Page.Locator("input#PrivateViewKey")
             .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
-        await s.Page.Locator("input#WalletPassword").FillAsync("pass123");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         var errorText = await s.Page
             .Locator("div.validation-summary-errors li")
             .InnerTextAsync();
 
         Assert.Equal("Could not generate view wallet from keys: Wallet already exists.", errorText);
+        await IntegrationTestUtils.CleanUpAsync(s);
+    }
+
+    [Fact]
+    public async Task ShouldLoadViewWalletOnStartUpIfExists()
+    {
+        await using var s = CreatePlaywrightTester();
+        await IntegrationTestUtils.CopyWalletFilesToMoneroRpcDirAsync(s, "wallet");
+        await s.StartAsync();
+        await s.RegisterNewUser(true);
+        await s.CreateNewStore();
+        await s.Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
+
+        var walletRpcIsAvailable = await s.Page
+            .Locator("li.list-group-item:text('Wallet RPC available: True')")
+            .InnerTextAsync();
+
+        Assert.Contains("Wallet RPC available: True", walletRpcIsAvailable);
+
+        await IntegrationTestUtils.CleanUpAsync(s);
+    }
+
+    [Fact]
+    public async Task ShouldLoadViewWalletWithPasswordOnStartUpIfExists()
+    {
+        await using var s = CreatePlaywrightTester();
+        await IntegrationTestUtils.CopyWalletFilesToMoneroRpcDirAsync(s, "wallet_password");
+        await s.StartAsync();
+        await s.RegisterNewUser(true);
+        await s.CreateNewStore();
+        await s.Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
+
+        var walletRpcIsAvailable = await s.Page
+            .Locator("li.list-group-item:text('Wallet RPC available: True')")
+            .InnerTextAsync();
+
+        Assert.Contains("Wallet RPC available: True", walletRpcIsAvailable);
 
         await IntegrationTestUtils.CleanUpAsync(s);
     }

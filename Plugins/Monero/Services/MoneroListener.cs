@@ -29,7 +29,7 @@ namespace BTCPayServer.Plugins.Monero.Services
     {
         private readonly InvoiceRepository _invoiceRepository;
         private readonly EventAggregator _eventAggregator;
-        private readonly MoneroRPCProvider _moneroRpcProvider;
+        private readonly MoneroRpcProvider _moneroRpcProvider;
         private readonly MoneroLikeConfiguration _MoneroLikeConfiguration;
         private readonly BTCPayNetworkProvider _networkProvider;
         private readonly ILogger<MoneroListener> _logger;
@@ -39,7 +39,7 @@ namespace BTCPayServer.Plugins.Monero.Services
 
         public MoneroListener(InvoiceRepository invoiceRepository,
             EventAggregator eventAggregator,
-            MoneroRPCProvider moneroRpcProvider,
+            MoneroRpcProvider moneroRpcProvider,
             MoneroLikeConfiguration moneroLikeConfiguration,
             BTCPayNetworkProvider networkProvider,
             ILogger<MoneroListener> logger,
@@ -62,12 +62,12 @@ namespace BTCPayServer.Plugins.Monero.Services
         {
             base.SubscribeToEvents();
             Subscribe<MoneroEvent>();
-            Subscribe<MoneroRPCProvider.MoneroDaemonStateChange>();
+            Subscribe<MoneroRpcProvider.MoneroDaemonStateChange>();
         }
 
         protected override async Task ProcessEvent(object evt, CancellationToken cancellationToken)
         {
-            if (evt is MoneroRPCProvider.MoneroDaemonStateChange stateChange)
+            if (evt is MoneroRpcProvider.MoneroDaemonStateChange stateChange)
             {
                 if (_moneroRpcProvider.IsAvailable(stateChange.CryptoCode))
                 {

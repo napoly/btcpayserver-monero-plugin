@@ -4,10 +4,10 @@
 
 We currently support the following versions of the Monero plugin for BTCPayServer:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.x     | ✅ Yes             |
-| 1.x     | ❌ No              |
+| Version | Supported   |
+|---------|-------------|
+| 1.1.x   | ✅ Yes       |
+| 1.0.x   | ❌ No        |
 
 ## Reporting a Vulnerability
 

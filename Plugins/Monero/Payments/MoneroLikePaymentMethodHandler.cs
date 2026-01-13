@@ -17,11 +17,11 @@ namespace BTCPayServer.Plugins.Monero.Payments
         private readonly MoneroLikeSpecificBtcPayNetwork _network;
         public MoneroLikeSpecificBtcPayNetwork Network => _network;
         public JsonSerializer Serializer { get; }
-        private readonly MoneroRPCProvider _moneroRpcProvider;
+        private readonly MoneroRpcProvider _moneroRpcProvider;
 
         public PaymentMethodId PaymentMethodId { get; }
 
-        public MoneroLikePaymentMethodHandler(MoneroLikeSpecificBtcPayNetwork network, MoneroRPCProvider moneroRpcProvider)
+        public MoneroLikePaymentMethodHandler(MoneroLikeSpecificBtcPayNetwork network, MoneroRpcProvider moneroRpcProvider)
         {
             PaymentMethodId = PaymentTypes.CHAIN.GetPaymentMethodId(network.CryptoCode);
             _network = network;
