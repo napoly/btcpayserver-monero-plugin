@@ -68,7 +68,7 @@ dotnet test BTCPayServer.Plugins.UnitTests --verbosity normal
 To run unit tests with coverage, install JetBrains dotCover CLI:
 
 ```bash
-dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2025.1.6
+dotnet tool install --global JetBrains.dotCover.CommandLineTools --version 2025.1.8
 ```
 Then run the following command:
 
@@ -99,7 +99,7 @@ Then create the `appsettings.dev.json` file in `btcpayserver/BTCPayServer`, with
 
 ```json
 {
-  "DEBUG_PLUGINS": "..\\..\\Plugins\\Monero\\bin\\Debug\\net8.0\\BTCPayServer.Plugins.Monero.dll",
+  "DEBUG_PLUGINS": "..\\..\\Plugins\\Monero\\bin\\Debug\\net10.0\\BTCPayServer.Plugins.Monero.dll",
   "XMR_DAEMON_URI": "http://127.0.0.1:18081",
   "XMR_WALLET_DAEMON_URI": "http://127.0.0.1:18082"
 }
