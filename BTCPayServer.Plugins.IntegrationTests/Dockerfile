@@ -21,8 +21,8 @@ COPY ../submodules/btcpayserver/BTCPayServer.Abstractions/. BTCPayServer.Abstrac
 COPY ../submodules/btcpayserver/BTCPayServer/. BTCPayServer/.
 COPY ../submodules/btcpayserver/Build/Version.csproj Build/Version.csproj
 
-ENV SCREEN_HEIGHT 600 \
-    SCREEN_WIDTH 1200
+ENV SCREEN_HEIGHT=600 \
+    SCREEN_WIDTH=1200
 
 COPY . .
 
@@ -32,7 +32,7 @@ RUN mkdir -p ${MONERO_PLUGIN_FOLDER}
 RUN cd Plugins/Monero && dotnet build BTCPayServer.Plugins.Monero.sln --configuration ${CONFIGURATION_NAME} /p:RazorCompileOnBuild=true --output ${MONERO_PLUGIN_FOLDER}
 RUN cd BTCPayServer.Plugins.IntegrationTests && dotnet build --configuration ${CONFIGURATION_NAME} /p:CI_TESTS=true /p:RazorCompileOnBuild=true
 RUN dotnet tool install --global Microsoft.Playwright.CLI
-RUN dotnet tool install --global JetBrains.DotCover.CommandLineTools --version 2025.1.6
+RUN dotnet tool install --global JetBrains.DotCover.CommandLineTools --version 2025.3.3
 ENV PATH="$PATH:/root/.dotnet/tools"
 RUN playwright install chromium --with-deps
 WORKDIR /source/BTCPayServer.Plugins.IntegrationTests
