@@ -85,6 +85,8 @@ namespace BTCPayServer.Plugins.Monero.Services
                         JsonRpcClient.NoRequestModel.Instance);
                 summary.TargetHeight = daemonResult.TargetHeight.GetValueOrDefault(0);
                 summary.CurrentHeight = daemonResult.Height;
+                summary.DaemonVersion = daemonResult.Version;
+                summary.Restricted = daemonResult.Restricted;
                 summary.TargetHeight = summary.TargetHeight == 0 ? summary.CurrentHeight : summary.TargetHeight;
                 summary.Synced = !daemonResult.BusySyncing;
                 summary.UpdatedAt = DateTime.UtcNow;
@@ -132,6 +134,8 @@ namespace BTCPayServer.Plugins.Monero.Services
             public long TargetHeight { get; set; }
             public DateTime UpdatedAt { get; set; }
             public bool DaemonAvailable { get; set; }
+            public string DaemonVersion { get; set; }
+            public bool Restricted { get; set; }
             public bool WalletAvailable { get; set; }
         }
     }
