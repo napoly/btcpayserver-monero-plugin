@@ -17,6 +17,7 @@
             </h5>
             <ul>
                 <li>Node available: @summary.Value.DaemonAvailable</li>
+                <li>Node version: @(Model.Summary.Restricted && string.IsNullOrWhiteSpace(Model.Summary.DaemonVersion) ? "restricted" : Model.Summary.DaemonVersion ?? "")</li>
                 <li>Wallet available: @summary.Value.WalletAvailable</li>
                 <li>Last updated: @summary.Value.UpdatedAt</li>
                 <li>Synced: @summary.Value.Synced (@summary.Value.CurrentHeight / @summary.Value.TargetHeight)</li>
