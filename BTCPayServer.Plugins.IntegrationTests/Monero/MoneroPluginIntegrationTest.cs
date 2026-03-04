@@ -45,13 +45,12 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
             .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
-        await s.Page.CheckAsync("#Enabled");
-        await s.Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "2");
-        await s.Page.ClickAsync("#SaveButton");
-        var classList = await s.Page
-            .Locator("svg.icon-checkmark")
-            .GetAttributeAsync("class");
-        Assert.Contains("text-success", classList);
+        var message = await s.Page
+            .GetByText("View-only wallet created. The wallet will soon become available.")
+            .InnerTextAsync();
+        Assert.Contains("View-only wallet created", message);
+
+        await Task.Delay(TimeSpan.FromSeconds(5)); // wallet-rpc needs some time to create wallet files. refactor this later
 
         // Set rate provider
         await s.Page.Locator("#menu-item-General").ClickAsync();
@@ -60,12 +59,18 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroAndBi
         await s.Page.SelectOptionAsync("#PrimarySource_PreferredExchange", "kraken");
         await s.Page.Locator("#page-primary").ClickAsync();
 
+        // Enable xmr wallet
+        await s.Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
+        await s.Page.CheckAsync("#Enabled");
+        await s.Page.SelectOptionAsync("#SettlementConfirmationThresholdChoice", "2");
+        await s.Page.ClickAsync("#SaveButton");
+
         // Generate a new invoice
         await s.Page.Locator("a.nav-link[href*='invoices']").ClickAsync();
         await s.Page.Locator("#page-primary").ClickAsync();
         await s.Page.FillAsync("#Amount", "4.20");
         await s.Page.FillAsync("#BuyerEmail", "monero@monero.com");
-        await Task.Delay(TimeSpan.FromSeconds(25)); // wallet-rpc needs some time to sync. refactor this later
+        await Task.Delay(TimeSpan.FromSeconds(20)); // wallet-rpc needs some time to sync. refactor this later
         await s.Page.Locator("#page-primary").ClickAsync();
 
         // View the invoice
