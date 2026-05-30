@@ -14,12 +14,12 @@ namespace BTCPayServer.Plugins.IntegrationTests.Monero;
 
 public static class IntegrationTestUtils
 {
+    public static bool RunsInContainer =>
+        bool.Parse(Environment.GetEnvironmentVariable("TESTS_INCONTAINER") ?? "false");
+
     private static readonly ILogger Logger = LoggerFactory
         .Create(builder => builder.AddConsole())
         .CreateLogger("IntegrationTestUtils");
-
-    private static readonly bool RunsInContainer =
-        bool.Parse(Environment.GetEnvironmentVariable("TESTS_INCONTAINER") ?? "false");
 
     private static readonly string ContainerWalletDir =
         Environment.GetEnvironmentVariable("BTCPAY_XMR_WALLET_DAEMON_WALLETDIR") ?? "/wallet";
@@ -34,7 +34,7 @@ public static class IntegrationTestUtils
         }.Uri
     };
 
-    public static async Task CleanUpAsync()
+    public static async ValueTask CleanUpAsync()
     {
         await CloseTestXmrWalletFilesViaRpc();
         if (RunsInContainer)
