@@ -40,9 +40,9 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroInteg
         await s.Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
         await s.Page.Locator("input#PrimaryAddress")
             .FillAsync(
-                "43Pnj6ZKGFTJhaLhiecSFfLfr64KPJZw7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L");
+                "9yEzCbcYdg6MqZ5AkEh8V3YCriyN1tvmtWEHdBEUHkF6D6kN1MMD2Kd2QVWoTY67aNHNYKMUP3xfteLS2QNavJxpJdx6mWj");
         await s.Page.Locator("input#PrivateViewKey")
-            .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
+            .FillAsync("1f4668e8c1979b4c7dae13dc149fd95cd7ff2883becffe160c21f9e02c821c08");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         var message = await s.Page
@@ -121,7 +121,7 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroInteg
         await s.Page.Locator("input#PrimaryAddress")
             .FillAsync("wrongprimaryaddressfSF6ZKGFT7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L");
         await s.Page.Locator("input#PrivateViewKey")
-            .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
+            .FillAsync("1f4668e8c1979b4c7dae13dc149fd95cd7ff2883becffe160c21f9e02c821c08");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         var errorText = await s.Page
@@ -143,8 +143,8 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroInteg
                 new GenerateFromKeysRequest
                 {
                     PrimaryAddress =
-                        "43Pnj6ZKGFTJhaLhiecSFfLfr64KPJZw7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L",
-                    PrivateViewKey = "1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e",
+                        "9yEzCbcYdg6MqZ5AkEh8V3YCriyN1tvmtWEHdBEUHkF6D6kN1MMD2Kd2QVWoTY67aNHNYKMUP3xfteLS2QNavJxpJdx6mWj",
+                    PrivateViewKey = "1f4668e8c1979b4c7dae13dc149fd95cd7ff2883becffe160c21f9e02c821c08",
                     WalletFileName = "wallet",
                     Password = ""
                 }, TestContext.Current.CancellationToken);
@@ -154,9 +154,9 @@ public class MoneroPluginIntegrationTest(ITestOutputHelper helper) : MoneroInteg
         await s.CreateNewStore();
         await s.Page.Locator("a.nav-link[href*='monerolike/XMR']").ClickAsync();
         await s.Page.Locator("input#PrimaryAddress")
-            .FillAsync("43Pnj6ZKGFTJhaLhiecSFfLfr64KPJZw7MyGH73T6PTDekBBvsTAaWEUSM4bmJqDuYLizhA13jQkMRPpz9VXBCBqQQb6y5L");
+            .FillAsync("9yEzCbcYdg6MqZ5AkEh8V3YCriyN1tvmtWEHdBEUHkF6D6kN1MMD2Kd2QVWoTY67aNHNYKMUP3xfteLS2QNavJxpJdx6mWj");
         await s.Page.Locator("input#PrivateViewKey")
-            .FillAsync("1bfa03b0c78aa6bc8292cf160ec9875657d61e889c41d0ebe5c54fd3a2c4b40e");
+            .FillAsync("1f4668e8c1979b4c7dae13dc149fd95cd7ff2883becffe160c21f9e02c821c08");
         await s.Page.Locator("input#RestoreHeight").FillAsync("0");
         await s.Page.ClickAsync("button[name='command'][value='set-wallet-details']");
         var errorText = await s.Page
